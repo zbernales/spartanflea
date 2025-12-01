@@ -160,15 +160,12 @@ export default function Product({params}){
     
             if (error) {
                 console.error('Error removing listing:', error.message);
-                // Handle error (e.g., show a message to the user)
             } else {
                 console.log('Listing removed successfully');
-                // Handle success (e.g., redirect to a different page)
                 window.location.href = '/';
             }
         } catch (error) {
             console.error('Error removing listing:', error.message);
-            // Handle error (e.g., show a message to the user)
         }
     };
 
@@ -188,14 +185,12 @@ export default function Product({params}){
                 ]);   
             if (error) {
                 console.error('Error adding item to wishlist:', error.message);
-                // Handle error (e.g., show a message to the user)
             } else {
                 console.log('Item added to wishlist');
                 window.location.reload();
             }
         } catch (error) {
             console.error('Error adding to wishlist:', error.message);
-            // Handle error (e.g., show a message to the user)
         }
     }
 
@@ -213,14 +208,12 @@ export default function Product({params}){
 
             if (error) {
                 console.error('Error removing item to wishlist:', error.message);
-                // Handle error (e.g., show a message to the user)
             } else {
                 console.log('Item removed wishlist');
                 window.location.reload();
             }
         } catch (error) {
             console.error('Error adding to wishlist:', error.message);
-            // Handle error (e.g., show a message to the user)
         }
     }
 

@@ -53,7 +53,6 @@ export default function Message() {
             const {data: {user}} = await supabase.auth.getUser();
             setUserid(user.id);
             if (!user) {
-                // User is not authenticated, handle accordingly
                 return;
             }
 
@@ -77,7 +76,6 @@ export default function Message() {
             }
         } catch (error) {
             console.error('Error fetching conversations:', error.message);
-            // Handle error
         }
     };
 

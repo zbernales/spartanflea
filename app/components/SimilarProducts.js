@@ -1,6 +1,6 @@
 'use client';
 import ProductComp from "./Product";
-import BiLoader from "react-icons/bi";
+import { BiLoader } from "react-icons/bi";
 
 export default function SimilarProducts() {
 

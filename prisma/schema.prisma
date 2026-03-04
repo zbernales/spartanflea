@@ -14,22 +14,27 @@ datasource db {
 }
 
 model User {
-  id          Int        @id @default(autoincrement())
-  username    String     @unique
-  email       String     @unique
+  id          Int       @id @default(autoincrement())
+  username    String    @unique
+  email       String    @unique
   password    String
   url         String
-  created_at  DateTime?  @default(now()) @db.Timestamptz(6)
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
   listing     Listing[]
+
+  // Add these lines so Prisma knows which side of the messages the user is on
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
 }
 
 model Listing {
-  order_id    Int         @id @default(autoincrement())
-  user        String         @db.Uuid
+  order_id    Int       @id @default(autoincrement())
+  userId      Int       // Changed from String @db.Uuid to match User.id
+  user        User      @relation(fields: [userId], references: [id])
   title       String
   description String
   price       Int
-  created_at  DateTime?   @default(now()) @db.Timestamptz(6)
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
   category    Category[]
 }
 
@@ -39,9 +44,15 @@ model Category {
 }
 
 model Message {
-  id          Int           @id @default(autoincrement())
-  sender      User           
-  receiver    User
+  id          Int       @id @default(autoincrement())
   content     String
-  created_at  DateTime?   @default(now()) @db.Timestamptz(6)
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+
+  // 1. Define the ID fields (Foreign Keys)
+  senderId    Int
+  receiverId  Int
+
+  // 2. Define the relations with names to disambiguate them
+  sender      User      @relation("SentMessages", fields: [senderId], references: [id])
+  receiver    User      @relation("ReceivedMessages", fields: [receiverId], references: [id])
 }

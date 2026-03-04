@@ -1,7 +1,5 @@
 "use client";
 import MainLayout from "@/app/layouts/MainLayout";
-import SimilarProducts from "../../components/SimilarProducts";
-import { createClient } from '@supabase/supabase-js';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useState, useEffect } from 'react';
 import Link from "next/link"; 
@@ -12,12 +10,16 @@ export default function Product({params}){
     const [sellerUsername, setSellerUsername] = useState(null);
     const [buyerId, setBuyerId] = useState('');
     const [isWishlisted, setIsWishlisted] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(true);
     
     useEffect(() => {
         async function fetchProduct() {
             // Initialize Supabase client
             const supabase = createClientComponentClient();
             const {data: {user}} = await supabase.auth.getUser();
+            if (!user) {
+                setLoggedIn(false);
+            }
             setBuyerId(user.id);
             // Fetch product details from Supabase
             const { data: productData, productError } = await supabase
@@ -216,102 +218,109 @@ export default function Product({params}){
             console.error('Error adding to wishlist:', error.message);
         }
     }
+    if (loggedIn) {
+        return(
+            <MainLayout>
+                <div className="max-w-[1200px] mx-auto">
+                    <div className="flex px-4 py-10">
 
-    return(
-        <MainLayout>
+                        {product?.image_link 
+                            ? <img className="w-[40%] rounded-lg" src={'https://vmqznpcwtsjjsdtlrntb.supabase.co/storage/v1/object/public/' + product.image_link} />
+                            : <div className="w-[40%]"></div>
+                        }
 
-            <div className="max-w-[1200px] mx-auto">
-                <div className="flex px-4 py-10">
+                        {/*Text Part of the Product Page */}
+                        <div className="px-4 w-full">
+                            <div className="font-bold text-xl">{product?.title}</div>
 
-                    {product?.image_link 
-                        ? <img className="w-[40%] rounded-lg" src={'https://vmqznpcwtsjjsdtlrntb.supabase.co/storage/v1/object/public/' + product.image_link} />
-                        : <div className="w-[40%]"></div>
-                    }
+                            <div className="border-b py-1" />
 
-                    {/*Text Part of the Product Page */}
-                    <div className="px-4 w-full">
-                        <div className="font-bold text-xl">{product?.title}</div>
-
-                        <div className="border-b py-1" />
-
-                        <div className="pt-3">
-                            <div className="w-full flex items-center justify-between"> 
-                                <div className="flex items-center">
-                                    Price: 
-                                    {product?.price
-                                        ? <div className="font-bold text-[20px] ml-2">
-                                            ${(product?.price).toFixed(2)}
-                                        </div>
-                                        : null
-                                    }
-                                </div>
-                                
-                                <div>
-                {/* Wishlist and Message buttons */}
-                {!buyerId || product?.user_id !== buyerId ? (
-                    <div>
-                    {/* Wishlist Button */}
-                    {isWishlisted ? (
-                        <button className="mx-4 bg-red-500 text-white py-2 px-10 rounded-full cursor-pointer" onClick={handleRemoveFromWishlist}>
-                            Remove from Wishlist
+                            <div className="pt-3">
+                                <div className="w-full flex items-center justify-between"> 
+                                    <div className="flex items-center">
+                                        Price: 
+                                        {product?.price
+                                            ? <div className="font-bold text-[20px] ml-2">
+                                                ${(product?.price).toFixed(2)}
+                                            </div>
+                                            : null
+                                        }
+                                    </div>
+                                    
+                                    <div>
+                    {/* Wishlist and Message buttons */}
+                    {!buyerId || product?.user_id !== buyerId ? (
+                        <div>
+                        {/* Wishlist Button */}
+                        {isWishlisted ? (
+                            <button className="mx-4 bg-red-500 text-white py-2 px-10 rounded-full cursor-pointer" onClick={handleRemoveFromWishlist}>
+                                Remove from Wishlist
+                            </button>
+                        ) : (
+                            <button className="mx-4 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer" onClick={handleWishlist}>
+                                Add to Wishlist
+                            </button>
+                        )}
+        
+                        {/* Message Button */}
+                        <button className="mx-4 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer" onClick={handleSendMessage}>
+                            Message
                         </button>
-                    ) : (
-                        <button className="mx-4 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer" onClick={handleWishlist}>
-                            Add to Wishlist
-                        </button>
-                    )}
-    
-                    {/* Message Button */}
-                    <button className="mx-4 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer" onClick={handleSendMessage}>
-                        Message
-                    </button>
-                    
-                </div>
-                ) : (
-                    <div>
-                        {/* Remove Listing Button */}
-                        <button
-                            className="mx-4 bg-red-500 text-white py-2 px-10 rounded-full cursor-pointer"
-                            onClick={handleRemoveListing}
-                        >
-                            Remove Listing
-                        </button>
+                        
                     </div>
-                                    )}
+                    ) : (
+                        <div>
+                            {/* Remove Listing Button */}
+                            <button
+                                className="mx-4 bg-red-500 text-white py-2 px-10 rounded-full cursor-pointer"
+                                onClick={handleRemoveListing}
+                            >
+                                Remove Listing
+                            </button>
+                        </div>
+                                        )}
 
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="border-b py-1" />
-                        
-                        {/*Product dscription*/}
-                        <div className="pt-3">
-                            <div className="font-semibold pb-1"> Description: </div>
-                            <div className="text-sm">{product?.description}</div>
-                        </div>
+                            <div className="border-b py-1" />
+                            
+                            {/*Product dscription*/}
+                            <div className="pt-3">
+                                <div className="font-semibold pb-1"> Description: </div>
+                                <div className="text-sm">{product?.description}</div>
+                            </div>
 
-                        {/* Category */}
-                        <div className="pt-3">
-                            <div className="font-semibold pb-1"> Category: </div>
-                            <div className="text-sm">{product?.category}</div>
-                        </div>
-                        <div className="pt-3">
-                            <div className="font-semibold pb-1"> Seller: </div>
-                            <div className="text-sm">{sellerUsername}
-                            {!buyerId || product?.user_id !== buyerId ?  (
-                            <Link href={`/externalprofile/${product?.user_id}`} className="mx-10 bg-blue-600 text-white py-2 px-10 rounded-full cursor-pointer inline-flex items-center justify-center">
-                                <button>
-                                    View Profile
-                                </button>
-                            </Link>
-                            ) : null}
-                            </div>      
+                            {/* Category */}
+                            <div className="pt-3">
+                                <div className="font-semibold pb-1"> Category: </div>
+                                <div className="text-sm">{product?.category}</div>
+                            </div>
+                            <div className="pt-3">
+                                <div className="font-semibold pb-1"> Seller: </div>
+                                <div className="text-sm">{sellerUsername}
+                                {!buyerId || product?.user_id !== buyerId ?  (
+                                <Link href={`/externalprofile/${product?.user_id}`} className="mx-10 bg-blue-600 text-white py-2 px-10 rounded-full cursor-pointer inline-flex items-center justify-center">
+                                    <button>
+                                        View Profile
+                                    </button>
+                                </Link>
+                                ) : null}
+                                </div>      
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-        </MainLayout>
-    );
+            </MainLayout>
+        );
+    }
+    else {
+        return (
+        <div>
+            <p><Link href="/login" className="text-blue-500 hover:text-blue-700">Log in </Link>to view products or <Link href="/" className="text-blue-500 hover:text-blue-700">return to home</Link></p>
+        </div>
+        );
+    }
 } 

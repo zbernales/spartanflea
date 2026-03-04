@@ -32,7 +32,6 @@ export default function Register() {
       console.error('Error registering user:', error.message);
     }
   };
-
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <Link href="/">

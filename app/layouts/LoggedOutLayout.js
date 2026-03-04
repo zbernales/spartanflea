@@ -1,15 +1,15 @@
-import TopMenu from "./includes/TopMenu";
+import LoggedOutTopMenu from "./includes/LoggedOutTopMenu";
 import MainHeader from "./includes/MainHeader";
 import SubMenu from "./includes/SubMenu";
 import Footer from "./includes/Footer"; 
 
-export default function MainLayout({children}){
+export default function LoggedOutLayout({children}){
 
     return(
         <>
-            <div id="MainLayout" className="min-w-[1050px] max-w-[1300px] mx-auto">
+            <div id="LoggedOutLayout" className="min-w-[1050px] max-w-[1300px] mx-auto">
                 <div>
-                    <TopMenu /> 
+                    <LoggedOutTopMenu />
                     <MainHeader /> 
                     <SubMenu /> 
                 </div>

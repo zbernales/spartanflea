@@ -39,8 +39,11 @@ model Listing {
 }
 
 model Category {
-  id        Int           @id @default(autoincrement())
-  name      String
+  id       Int       @id @default(autoincrement())
+  name     String
+
+  // Add this line so Category knows about Listing
+  listings Listing[] 
 }
 
 model Message {

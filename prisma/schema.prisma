@@ -25,7 +25,7 @@ model User {
 
 model Listing {
   order_id    Int         @id @default(autoincrement())
-  user        User         @db.Uuid
+  user        String         @db.Uuid
   title       String
   description String
   price       Int

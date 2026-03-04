@@ -10,10 +10,6 @@ export default function Register() {
   const [password, setPassword] = useState('');
 
   const handleRegister = async (e) => {
-    if (!email.endsWith('@sjsu.edu')) {
-      alert('You must use your SJSU email to register');
-      return;
-    }
     e.preventDefault();
     try {
       const { user, error } = await supabase.auth.signUp({ 

@@ -113,8 +113,8 @@ export default function Profile() {
                 {/* Left Column */}
                 <div className="w-1/3">
                     <div className="px-4 mb-4 mt-10">
-                        <div className="text-center font-bold text-xl">{userData.username}'s profile</div>
-                        <div className="text-center text-sm">{userData.email}</div>
+                        <div className="text-center font-bold text-xl">{userData?.username}'s profile</div>
+                        <div className="text-center text-sm">{userData?.email}</div>
                     </div>
                     <img
                         className="w-56 h-56 rounded-full ml-4" 

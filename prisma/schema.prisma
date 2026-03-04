@@ -21,15 +21,13 @@ model User {
   url         String
   created_at  DateTime? @default(now()) @db.Timestamptz(6)
   listing     Listing[]
-
-  // Add these lines so Prisma knows which side of the messages the user is on
   sentMessages     Message[] @relation("SentMessages")
   receivedMessages Message[] @relation("ReceivedMessages")
 }
 
 model Listing {
   order_id    Int       @id @default(autoincrement())
-  userId      Int       // Changed from String @db.Uuid to match User.id
+  userId      Int      
   user        User      @relation(fields: [userId], references: [id])
   title       String
   description String

@@ -7,7 +7,6 @@ import Product from '../components/Product.js';
 
 
 export default function Profile() {
-    const defaultImageUrl = "https://content.sportslogos.net/logos/34/828/full/san_jose_state_spartans_logo_alternate_20006654.png";
     const [userId, setUserId] = useState('');
     const [userData, setUserData] = useState([]);
     const [products, setProducts] = useState([]);

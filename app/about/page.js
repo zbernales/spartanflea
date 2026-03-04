@@ -1,5 +1,5 @@
 "use client";
-import MainLayout from "@/app/layouts/ProfileLayout";
+import MainLayout from "@/app/layouts/MainLayout";
 import Link from "next/link"; 
 import { PrismaClient } from '@prisma/client';
 import { useEffect, useState } from 'react';

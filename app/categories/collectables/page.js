@@ -10,12 +10,15 @@ import { useState, useEffect } from 'react';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     async function fetchProducts() {
       // Initialize Supabase client
       const supabase = createClientComponentClient();
       const {data: {user}} = await supabase.auth.getUser()
-
+      if (!user) {
+        isLoggedIn(false);
+      }
       // Fetch products from the database
       const { data, error } = await supabase
         .from('productlisting')
@@ -30,18 +33,20 @@ export default function Home() {
 
     fetchProducts();
   }, []);
-    return (
-    <>
-        <MainLayout>
-            <div className="max-w-[1200px] mx-auto">
-              <div className="text-2xl font-bold mt-4 mb-6 px-4">Products / Collectables and Art</div>
-              <div className="grid grid-cols-5 gap-4">
-                {products.map(product => (
-                  <Product key={product.listingid} product={product} />
-                ))}
-            </div>
+
+  return (
+  <>
+      <MainLayout>
+          <div className="max-w-[1200px] mx-auto">
+            <div className="text-2xl font-bold mt-4 mb-6 px-4">Products / Collectables and Art</div>
+            <div className="grid grid-cols-5 gap-4">
+              {products.map(product => (
+                <Product key={product.listingid} product={product} />
+              ))}
           </div>
-        </MainLayout>
-    </>
+        </div>
+      </MainLayout>
+  </>
   )
+    
 }

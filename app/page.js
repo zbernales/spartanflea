@@ -1,7 +1,6 @@
 "use client"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import MainLayout from './layouts/MainLayout.js'
-import LoggedOutLayout from './layouts/LoggedOutLayout.js'
 import Product from './components/Product.js';
 import { useState, useEffect } from 'react';
 
@@ -36,36 +35,19 @@ export default function Home() {
     fetchProducts();
   }, []);
 
-  if (loggedIn) {
-    return (
-      <>
-          <MainLayout>
-              <div className="max-w-[1200px] mx-auto">
-                <div className="text-2xl font-bold mt-4 mb-6 px-4">Products</div>
-                <div className="grid grid-cols-5 gap-4">
-                  {products.map(product => (
-                    <Product key={product.listingid} product={product} />
-                  ))}
-              </div>
+  return (
+    <>
+        <MainLayout>
+            <div className="max-w-[1200px] mx-auto">
+              <div className="text-2xl font-bold mt-4 mb-6 px-4">Products</div>
+              <div className="grid grid-cols-5 gap-4">
+                {products.map(product => (
+                  <Product key={product.listingid} product={product} />
+                ))}
             </div>
-          </MainLayout>
-      </>
-    )
-  } else {
-    return (
-      <>
-          <LoggedOutLayout>
-              <div className="max-w-[1200px] mx-auto">
-                <div className="text-2xl font-bold mt-4 mb-6 px-4">Products</div>
-                <div className="grid grid-cols-5 gap-4">
-                  {products.map(product => (
-                    <Product key={product.listingid} product={product} />
-                  ))}
-              </div>
-            </div>
-          </LoggedOutLayout>
-      </>
-    )
-  }
+          </div>
+        </MainLayout>
+    </>
+  )
     
 }
